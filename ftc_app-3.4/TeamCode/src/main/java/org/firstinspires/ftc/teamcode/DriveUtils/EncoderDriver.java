@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.DriveUtils;
 
 //import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 /**
  * Created by 5815-Disgruntled on 10/16/2017.
@@ -49,7 +50,7 @@ public class EncoderDriver {
         frontRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backLeft.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         backRight.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+frontLeft.setDirection(DcMotor.Direction.FORWARD);
         frontLeft.setPower(Math.abs(speed));
         frontRight.setPower(Math.abs(speed));
         backLeft.setPower(Math.abs(speed));
