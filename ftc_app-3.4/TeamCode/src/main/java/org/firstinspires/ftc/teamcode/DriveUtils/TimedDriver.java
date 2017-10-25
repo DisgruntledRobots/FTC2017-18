@@ -89,6 +89,7 @@ public class TimedDriver {
 
     }
 
+    /*
     public void testLinear(boolean fwd, double speed, double distance) {
 
         runtime.reset();
@@ -118,5 +119,6 @@ public class TimedDriver {
 
         }
     }
+    */
 
 }
