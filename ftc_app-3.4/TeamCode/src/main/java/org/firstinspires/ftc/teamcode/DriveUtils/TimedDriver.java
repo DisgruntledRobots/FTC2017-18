@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.teamcode.DriveUtils;
 
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -20,13 +21,13 @@ public class TimedDriver {
     private DcMotor backLeft;
     private DcMotor backRight;
     private boolean headedFwd = true;
-
+    private LinearOpMode opMode;
     private DcMotor[] motors_ref = new DcMotor[4];
     private ElapsedTime runtime = new ElapsedTime();
 
     public static final double INCHES_PER_SECOND = 9;
 
-    public TimedDriver(DcMotor[] motors) {
+    public TimedDriver(DcMotor[] motors, LinearOpMode opMode) {
 
         frontLeft = motors[0];
         frontRight = motors[1];
@@ -34,6 +35,7 @@ public class TimedDriver {
         backRight = motors[3];
 
         motors_ref = motors;
+        this.opMode = opMode;
 
         frontLeft.setPower(0);
         frontRight.setPower(0);
@@ -88,34 +90,32 @@ public class TimedDriver {
 
 
 
-    public void forward(Double speed, Double distance, Double runtime) {
+    public void forward(Double speed, Double distance) {
+
+        runtime.reset();
 
         if( headedFwd ) {
 
-            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
+            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
 
                 powerMotors(speed);
 
-            } else {
-
-                stopMotors();
-
             }
+
+            stopMotors();
 
         } else {
 
             setMotorsForward();
             headedFwd = true;
 
-            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
+            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
 
                 powerMotors(speed);
 
-            } else {
-
-                stopMotors();
-
             }
+
+            stopMotors();
 
         }
 
@@ -123,34 +123,32 @@ public class TimedDriver {
 
 
 
-    public void backward(Double speed, Double distance, Double runtime) {
+    public void backward(Double speed, Double distance) {
+
+        runtime.reset();
 
         if( !headedFwd ) {
 
-            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
+            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
 
                 powerMotors(speed);
 
-            } else {
-
-                stopMotors();
-
             }
+
+            stopMotors();
 
         } else {
 
             setMotorsBackward();
             headedFwd = false;
 
-            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
+            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
 
                 powerMotors(speed);
 
-            } else {
-
-                stopMotors();
-
             }
+
+            stopMotors();
 
         }
 

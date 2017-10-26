@@ -28,7 +28,7 @@ public class TimedDriveTest extends LinearOpMode {
     private static DcMotor[] motors = new DcMotor[4];
 
     public HardwareFrame robot = new HardwareFrame();
-    private TimedDriver timedDriver;
+    private TimedDriver drive;
     private DriveScheduler scheduler;
     private ElapsedTime runtime = new ElapsedTime();
 
@@ -56,8 +56,8 @@ public class TimedDriveTest extends LinearOpMode {
         motors[1] = robot.frontRightMotor;
         motors[2] = robot.backLeftMotor;
         motors[3] = robot.backRightMotor;
-        timedDriver = new TimedDriver(motors);
-        scheduler = new DriveScheduler(timedDriver);
+        drive = new TimedDriver(motors, this);
+        //scheduler = new DriveScheduler(timedDriver);
 
 
         //Alert driver station that robot is ready to start
@@ -67,10 +67,8 @@ public class TimedDriveTest extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //enqueue movements
-
-        //execute all queued actions
-        scheduler.start();
+        drive.forward(DRIVE_SPEED, 9.0);
+        drive.backward(DRIVE_SPEED, 9.0);
 
         sleep(5000);
         //Indicate smooth ending to opmode
