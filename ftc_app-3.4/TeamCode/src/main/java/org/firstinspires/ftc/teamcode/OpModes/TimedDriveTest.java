@@ -41,7 +41,7 @@ public class TimedDriveTest extends LinearOpMode {
 
         public DriveScheduler(T driver) {
 
-            super(driver);
+            super(driver, telemetry);
 
         }
 
@@ -67,23 +67,7 @@ public class TimedDriveTest extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        //just in case you specified a non-existent method,
-        //I wrote scheduler to throw a NoSuchMethodException
-        try {
-
-            //schedule 5 seconds fwd
-            scheduler.enqueue(new Object[] {
-                    "linear",
-                    true,
-                    DRIVE_SPEED,
-                    45.0
-            });
-
-        } catch( NoSuchMethodException e ) {
-
-            telemetry.addData("Caught exception: ", e.getMessage());
-
-        }
+        //enqueue movements
 
         //execute all queued actions
         scheduler.start();

@@ -13,10 +13,13 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 
 public class TimedDriver {
 
+
+
     private DcMotor frontLeft;
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    private boolean headedFwd = true;
 
     private DcMotor[] motors_ref = new DcMotor[4];
     private ElapsedTime runtime = new ElapsedTime();
@@ -39,6 +42,8 @@ public class TimedDriver {
 
     }
 
+
+
     public void setMotorsForward() {
 
         frontLeft.setDirection(DcMotor.Direction.REVERSE);
@@ -47,6 +52,8 @@ public class TimedDriver {
         backRight.setDirection(DcMotor.Direction.FORWARD);
 
     }
+
+
 
     public void setMotorsBackward() {
 
@@ -57,6 +64,8 @@ public class TimedDriver {
 
     }
 
+
+
     private void powerMotors(double speed) {
 
         frontLeft.setPower(speed);
@@ -65,6 +74,8 @@ public class TimedDriver {
         backRight.setPower(speed);
 
     }
+
+
 
     private void stopMotors() {
 
@@ -75,7 +86,11 @@ public class TimedDriver {
 
     }
 
-    public void linear(Double speed, Double distance, Double runtime) {
+
+
+    public void forward(Double speed, Double distance, Double runtime) {
+
+        if( headedFwd ) {
 
             if( (runtime < (distance / INCHES_PER_SECOND)) ) {
 
@@ -87,38 +102,60 @@ public class TimedDriver {
 
             }
 
-    }
-
-    /*
-    public void testLinear(boolean fwd, double speed, double distance) {
-
-        runtime.reset();
-
-        if( fwd ) {
+        } else {
 
             setMotorsForward();
+            headedFwd = true;
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 
+            } else {
+
+                stopMotors();
+
             }
 
-            stopMotors();
+        }
+
+    }
+
+
+
+    public void backward(Double speed, Double distance, Double runtime) {
+
+        if( !headedFwd ) {
+
+            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
+
+                powerMotors(speed);
+
+            } else {
+
+                stopMotors();
+
+            }
 
         } else {
 
             setMotorsBackward();
+            headedFwd = false;
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            if( (runtime < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 
+            } else {
+
+                stopMotors();
+
             }
-            stopMotors();
 
         }
+
     }
-    */
+
+
 
 }

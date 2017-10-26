@@ -2,8 +2,7 @@ package org.firstinspires.ftc.teamcode.ControlUtils;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 
-import org.firstinspires.ftc.teamcode.DriveUtils.EncoderDriver;
-import org.firstinspires.ftc.teamcode.DriveUtils.TimedDriver;
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -19,14 +18,15 @@ public class Scheduler<T> {
     private int nextIndex = 1;
     private int currentIndex = 0;
     private T driver;
-    private DcMotor[] motorsRef;
+    private Telemetry telemetry;
     private ArrayList<Object[]> queue = new ArrayList();
     private Method[] validMethods;
     private String[] methodNames;
 
-    public Scheduler(T driver) {
+    public Scheduler(T driver, Telemetry telemetry) {
 
         this.driver = driver;
+        this.telemetry = telemetry;
 
         //array of public methods for driver object
         validMethods = driver.getClass().getMethods();
@@ -40,12 +40,79 @@ public class Scheduler<T> {
 
     }
 
+
+
+    private boolean methodExists(String methodName) {
+
+        if( Arrays.asList(methodNames).contains(methodName) ) {
+
+            return true;
+
+        } else {
+
+            return false;
+
+        }
+
+    }
+
+
+
+    private Method getMethod(String methodName) throws NoSuchMethodException {
+
+        for( int i = 0; i < validMethods.length; i++ ) {
+
+            if( validMethods[i].getName().equals(methodName) ) {
+
+                return validMethods[i];
+
+            }
+
+        }
+
+        //if we couldn't return a method object
+        throw new NoSuchMethodException("Couldn't find a method in getMethod()");
+
+    }
+
+
+
+    private void runNext() {
+
+        Object[] methodInfo = queue.get(currentIndex);
+        String methodName = methodInfo[0].toString();
+        Object[] methodArgs = Arrays.copyOfRange(methodInfo, 1, methodInfo.length);
+        Method method;
+
+        try {
+
+            method = getMethod(methodName);
+            method.invoke(driver, methodArgs);
+
+        } catch( NoSuchMethodException e ) {
+
+            telemetry.addData("Error: ", e.getMessage());
+
+        } catch( InvocationTargetException e ) {
+
+            e.getMessage();
+
+        } catch( IllegalAccessException e ) {
+
+            e.getMessage();
+
+        }
+
+    }
+
+
+
     public void enqueue(Object[] methodInfo) throws NoSuchMethodException {
 
         String methodName = methodInfo[0].toString();
 
         //check for valid method
-        if( Arrays.asList(methodNames).contains(methodName) ) {
+        if( methodExists(methodName) ) {
 
             if( currentIndex == 0 ) {
 
@@ -60,15 +127,17 @@ public class Scheduler<T> {
 
         } else {
 
-            throw new NoSuchMethodException("Can't queue method: " + methodName);
+            throw new NoSuchMethodException("Can't enqueue method: " + methodName);
 
         }
 
     }
 
+
+
     public void start() {
 
-        while( currentIndex > -1 ) {
+        while( currentIndex >= 0 ) {
 
             runNext();
             queue.remove(currentIndex);
@@ -79,43 +148,6 @@ public class Scheduler<T> {
 
     }
 
-    public void runNext() {
 
-        Object[] methodInfo = queue.get(currentIndex);
-        String methodName = methodInfo[0].toString();
-        Object[] methodArgs = Arrays.copyOfRange(methodInfo, 1, methodInfo.length);
-        Method method;
-
-
-        //get method and invoke it
-        for( int i = 0; i < validMethods.length; i++ ) {
-
-            if( validMethods[i].getName().equals(methodName) ) {
-
-                method = validMethods[i];
-                //invoke method
-                try {
-
-                    method.invoke(driver, methodArgs);
-
-                } catch( InvocationTargetException e ) {
-
-                    e.getMessage();
-                    break;
-
-                } catch( IllegalAccessException e ) {
-
-                    e.getMessage();
-                    break;
-
-                }
-
-                break;
-
-            }
-
-        }
-
-    }
 
 }
