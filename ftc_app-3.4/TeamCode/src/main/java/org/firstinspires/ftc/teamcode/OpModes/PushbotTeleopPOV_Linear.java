@@ -1,9 +1,13 @@
 package org.firstinspires.ftc.teamcode.OpModes;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.Range;
+
+import org.firstinspires.ftc.teamcode.HardwareFrame;
+
 /**
  * TeleOp Mode
  * <p>
@@ -16,6 +20,7 @@ public class PushbotTeleopPOV_Linear extends OpMode {
     private DcMotor frontRight;
     private DcMotor backLeft;
     private DcMotor backRight;
+    HardwareFrame robot;
 
     /*
     * Note: the configuration of the servos is such that

@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode.DriveUtils;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -96,7 +95,7 @@ public class TimedDriver {
 
         if( headedFwd ) {
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            while( opMode.opModeIsActive() && (runtime.seconds() < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 
@@ -109,7 +108,7 @@ public class TimedDriver {
             setMotorsForward();
             headedFwd = true;
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            while( opMode.opModeIsActive() && (runtime.seconds() < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 
@@ -129,7 +128,7 @@ public class TimedDriver {
 
         if( !headedFwd ) {
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            while( opMode.opModeIsActive() && (runtime.seconds() < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 
@@ -142,7 +141,7 @@ public class TimedDriver {
             setMotorsBackward();
             headedFwd = false;
 
-            while( runtime.seconds() < (distance / INCHES_PER_SECOND) ) {
+            while( opMode.opModeIsActive() && (runtime.seconds() < (distance / INCHES_PER_SECOND)) ) {
 
                 powerMotors(speed);
 

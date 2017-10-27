@@ -43,20 +43,18 @@ public class LinearOpMode_TimedDrive extends LinearOpMode {
 
         waitForStart();
 
-        /*
         //fwd 45 inches
-        linear(true, DRIVE_SPEED, 45);
+        linear(true, DRIVE_SPEED, 10);
         //back 45 inches
-        linear(false, DRIVE_SPEED, 45);
+        linear(false, DRIVE_SPEED, 10);
         //fwd 45 inches
-        linear(true, DRIVE_SPEED, 45);
+        linear(true, DRIVE_SPEED, 10);
 
 
         //rotate to the right 90 degrees
         rotate(true, TURN_SPEED, 90);
         //rotate to the left 90 degrees
         rotate(false, TURN_SPEED, 90);
-        */
 
         telemetry.addData("Status: ", "Ending");
         telemetry.update();

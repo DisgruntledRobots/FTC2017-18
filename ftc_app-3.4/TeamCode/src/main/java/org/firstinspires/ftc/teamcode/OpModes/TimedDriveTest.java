@@ -6,20 +6,14 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.robotcore.external.Telemetry;
-import org.firstinspires.ftc.teamcode.ControlUtils.Scheduler;
-import org.firstinspires.ftc.teamcode.DriveUtils.EncoderDriver;
 import org.firstinspires.ftc.teamcode.DriveUtils.TimedDriver;
 import org.firstinspires.ftc.teamcode.HardwareFrame;
-
-import java.sql.Time;
 
 /**
  * Created by 5815-Disgruntled on 10/16/2017.
  */
 
 @Autonomous(name="Test: Driving, timed", group="Tests")
-@Disabled
 public class TimedDriveTest extends LinearOpMode {
 
     private static final double DRIVE_SPEED = 0.6;
@@ -29,23 +23,7 @@ public class TimedDriveTest extends LinearOpMode {
 
     public HardwareFrame robot = new HardwareFrame();
     private TimedDriver drive;
-    private DriveScheduler scheduler;
     private ElapsedTime runtime = new ElapsedTime();
-
-    /*
-    * The purpose of this class is to enable writing the code for controlling motors
-    * outside of the opmode while still being able to run them in the opModeIsActive()
-    * control loop
-    * */
-    private class DriveScheduler<T> extends Scheduler {
-
-        public DriveScheduler(T driver) {
-
-            super(driver, telemetry);
-
-        }
-
-    }
 
     @Override
     public void runOpMode() {
@@ -57,7 +35,6 @@ public class TimedDriveTest extends LinearOpMode {
         motors[2] = robot.backLeftMotor;
         motors[3] = robot.backRightMotor;
         drive = new TimedDriver(motors, this);
-        //scheduler = new DriveScheduler(timedDriver);
 
 
         //Alert driver station that robot is ready to start
