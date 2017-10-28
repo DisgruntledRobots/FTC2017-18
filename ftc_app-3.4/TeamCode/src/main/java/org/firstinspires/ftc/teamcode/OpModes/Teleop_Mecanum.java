@@ -10,7 +10,7 @@ import org.firstinspires.ftc.teamcode.HardwareFrame;
 /**
  * Created by Maximos on 10/27/2017.
  */
-@TeleOp(name="Pushbot: Teleop POV", group="TeleOp")
+@TeleOp(name="Mecanum Drive", group="TeleOp")
 public class Teleop_Mecanum extends LinearOpMode {
 
     
