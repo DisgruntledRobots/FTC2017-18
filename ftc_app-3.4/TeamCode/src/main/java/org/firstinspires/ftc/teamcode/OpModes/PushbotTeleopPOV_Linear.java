@@ -13,7 +13,7 @@ import org.firstinspires.ftc.teamcode.HardwareFrame;
  * <p>
  * Enables control of the robot via the gamepad
  */
-@TeleOp(name="TeleOp", group="Tests")
+@TeleOp(name="TeleOp", group="TeleOp")
 public class PushbotTeleopPOV_Linear extends OpMode {
 
     private DcMotor frontLeft;
