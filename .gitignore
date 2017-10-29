@@ -74,3 +74,8 @@ Thumbs.db
 .idea
 .gradle
 build/
+ftc_app-3.4/build.common.gradle
+ftc_app-3.4/build.gradle
+ftc_app-3.4/FtcRobotController/build.gradle
+ftc_app-3.4/gradle/wrapper/gradle-wrapper.properties
+ftc_app-3.4/TeamCode/build.gradle
