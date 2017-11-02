@@ -19,6 +19,9 @@ public class HardwareFrame {
     public DcMotor frontLeftMotor = null;
     public DcMotor backLeftMotor = null;
 
+    public DcMotor throatMotor = null;
+    public DcMotor liftMotor = null;
+
     private HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
 
@@ -26,11 +29,9 @@ public class HardwareFrame {
 
     }
 
-    /* Initialize standard Hardware interfaces */
-    public void init(HardwareMap ahwMap) {
 
-        // Save reference to Hardware map
-        hwMap = ahwMap;
+
+    private void init_drive() {
 
         // Define and Initialize Motors
         frontRightMotor = hwMap.get(DcMotor.class, "drive_motor_front_right");
@@ -57,6 +58,36 @@ public class HardwareFrame {
         frontRightMotor.setPower(0);
         backLeftMotor.setPower(0);
         backRightMotor.setPower(0);
+
+    }
+
+
+
+    private void init_ball_mechanism() {
+
+        throatMotor = hwMap.get(DcMotor.class, "throat_motor");
+        liftMotor = hwMap.get(DcMotor.class, "lift_motor");
+
+        throatMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftMotor.setDirection(DcMotor.Direction.FORWARD);
+
+        throatMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+
+        throatMotor.setPower(0);
+        liftMotor.setPower(0);
+
+    }
+
+    /* Initialize standard Hardware interfaces */
+    public void init(HardwareMap ahwMap) {
+
+        // Save reference to Hardware map
+        hwMap = ahwMap;
+
+        init_drive();
+
+        init_ball_mechanism();
 
     }
 
