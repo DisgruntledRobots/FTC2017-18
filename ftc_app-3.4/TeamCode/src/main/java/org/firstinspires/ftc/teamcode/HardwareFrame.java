@@ -19,8 +19,11 @@ public class HardwareFrame {
     public DcMotor frontLeftMotor = null;
     public DcMotor backLeftMotor = null;
 
-    public DcMotor throatMotor = null;
+    public DcMotor cubeMotor = null;
     public DcMotor liftMotor = null;
+
+    public Servo Lift1 = null;
+    public Servo Lift2 = null;
 
     private HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
@@ -61,20 +64,27 @@ public class HardwareFrame {
 
     }
 
+    private void init_servo (){
 
+        Lift1  = hwMap.get(Servo.class, "servo_1");
+        Lift2 = hwMap.get(Servo.class, "servo_2");
+        Lift1.setPosition(0);
+        Lift2.setPosition(0);
 
-    private void init_ball_mechanism() {
+    }
 
-        throatMotor = hwMap.get(DcMotor.class, "throat_motor");
+    private void init_cube_motors() {
+
+        cubeMotor = hwMap.get(DcMotor.class, "throat_motor");
         liftMotor = hwMap.get(DcMotor.class, "lift_motor");
 
-        throatMotor.setDirection(DcMotor.Direction.FORWARD);
+        cubeMotor.setDirection(DcMotor.Direction.FORWARD);
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
 
-        throatMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        cubeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        throatMotor.setPower(0);
+        cubeMotor.setPower(0);
         liftMotor.setPower(0);
 
     }
@@ -87,7 +97,9 @@ public class HardwareFrame {
 
         init_drive();
 
-        init_ball_mechanism();
+        init_cube_motors();
+
+        init_servo();
 
     }
 
