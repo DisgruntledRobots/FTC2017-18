@@ -20,7 +20,8 @@ public class Teleop_Mecanum extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFrame robot = new HardwareFrame();
 
-    private double multiplyer = 1.0;
+    private double multiplyer = 1;
+    private double liftCoef = 0.75;
     public static double a = 17.35/2;
     public static double b = 12.5/2;
 
@@ -81,7 +82,17 @@ public class Teleop_Mecanum extends LinearOpMode {
 
                 double pos = robot.Lift1.getPosition();
 
-                robot.Lift1.setPosition(pos == 0 ? 1 : 0);
+                if( pos == 0 ) {
+
+                    pos = 1;
+
+                } else {
+
+                    pos = 0;
+
+                }
+
+                robot.Lift1.setPosition(pos);
 
             }
 
@@ -89,7 +100,17 @@ public class Teleop_Mecanum extends LinearOpMode {
 
                 double pos = robot.Lift2.getPosition();
 
-                robot.Lift2.setPosition(pos == 0 ? -1 : 0);
+                if( pos == 0 ) {
+
+                    pos = 1;
+
+                } else {
+
+                    pos = 0;
+
+                }
+
+                robot.Lift2.setPosition(pos);
 
             }
 
@@ -99,12 +120,16 @@ public class Teleop_Mecanum extends LinearOpMode {
             if( gamepad2.right_trigger > 0 ) {
 
                 robot.liftMotor.setDirection(DcMotorSimple.Direction.FORWARD);
-                robot.liftMotor.setPower(gamepad2.right_trigger);
+                robot.liftMotor.setPower(liftCoef * gamepad2.right_trigger);
 
             } else if( gamepad2.left_trigger > 0 ) {
 
                 robot.liftMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-                robot.liftMotor.setPower(gamepad2.left_trigger);
+                robot.liftMotor.setPower(liftCoef * gamepad2.left_trigger);
+
+            } else {
+
+                robot.liftMotor.setPower(0);
 
             }
 
@@ -120,6 +145,10 @@ public class Teleop_Mecanum extends LinearOpMode {
 
                 robot.cubeMotor.setDirection(DcMotorSimple.Direction.REVERSE);
                 robot.cubeMotor.setPower(Math.abs(gamepad2.right_stick_y));
+
+            } else {
+
+                robot.cubeMotor.setPower(0);
 
             }
 
@@ -151,7 +180,7 @@ public class Teleop_Mecanum extends LinearOpMode {
                 robot.frontLeftMotor.setPower((-gamepad1.left_stick_y)*multiplyer);
                 robot.frontRightMotor.setPower((-gamepad1.right_stick_y)*multiplyer);
                 robot.backRightMotor.setPower((-gamepad1.right_stick_y)*multiplyer);
-                robot.backLeftMotor.setPower((-gamepad1.left_stick_y )*multiplyer);
+                robot.backLeftMotor.setPower((-gamepad1.left_stick_y)*multiplyer);
                 telemetry.addData("Debug", "In tank drive");
                 telemetry.update();
 

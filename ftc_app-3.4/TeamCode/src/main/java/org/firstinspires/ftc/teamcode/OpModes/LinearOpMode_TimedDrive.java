@@ -1,6 +1,7 @@
 package org.firstinspires.ftc.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
@@ -14,6 +15,7 @@ import org.firstinspires.ftc.teamcode.HardwareFrame;
  */
 
 @Autonomous(name="Test: Driving", group="Tests")
+@Disabled
 public class LinearOpMode_TimedDrive extends LinearOpMode {
 
     private ElapsedTime runtime = new ElapsedTime();

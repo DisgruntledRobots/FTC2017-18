@@ -25,6 +25,7 @@ public abstract class DcMotorDriver {
     protected boolean headedRight = true;
     protected LinearOpMode opMode;
     protected ElapsedTime runtime = new ElapsedTime();
+    protected static final double driveCoef = 0.75;
 
 
 
@@ -74,10 +75,10 @@ public abstract class DcMotorDriver {
 
     protected final void powerMotors(double speed) {
 
-        frontLeft.setPower(speed);
-        frontRight.setPower(speed);
-        backLeft.setPower(speed);
-        backRight.setPower(speed);
+        frontLeft.setPower(driveCoef * speed);
+        frontRight.setPower(driveCoef * speed);
+        backLeft.setPower(driveCoef * speed);
+        backRight.setPower(driveCoef * speed);
 
     }
 
