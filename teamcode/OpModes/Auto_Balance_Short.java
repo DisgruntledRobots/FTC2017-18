@@ -1,12 +1,12 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.FTC2017_18.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
-import org.firstinspires.ftc.teamcode.DriveUtils.TimedDriver;
-import org.firstinspires.ftc.teamcode.HardwareFrame;
+import org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils.TimedDriver;
+import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 
 /**
  * Created by 5815-Disgruntled on 11/3/2017.

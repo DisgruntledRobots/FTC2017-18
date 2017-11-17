@@ -1,10 +1,10 @@
-package org.firstinspires.ftc.teamcode.OpModes;
+package org.firstinspires.ftc.FTC2017_18.teamcode.OpModes;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import org.firstinspires.ftc.teamcode.HardwareFrame;
+import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 
 /**
  * Created by 5815-Disgruntled on 10/17/2017.
