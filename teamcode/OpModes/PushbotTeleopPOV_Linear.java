@@ -14,6 +14,7 @@ import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
  * Enables control of the robot via the gamepad
  */
 @TeleOp(name="TeleOp", group="TeleOp")
+@Disabled
 public class PushbotTeleopPOV_Linear extends OpMode {
 
     private DcMotor frontLeft;

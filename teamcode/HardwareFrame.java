@@ -1,8 +1,12 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cRangeSensor;
 import com.qualcomm.hardware.motors.NeveRest40Gearmotor;
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.GyroSensor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -19,10 +23,54 @@ public class HardwareFrame {
     public DcMotor frontLeftMotor = null;
     public DcMotor backLeftMotor = null;
 
+    public DcMotor blockTray = null;
+    public DcMotor intakePos = null;
+    public DcMotor rollers = null;
+
+    public Servo servo1;
+
+    public ColorSensor colorSensor;
+    public ModernRoboticsI2cGyro gyroSensor;
+    public ModernRoboticsI2cRangeSensor rangeSensor;
+
     private HardwareMap hwMap =  null;
     private ElapsedTime period = new ElapsedTime();
 
     public HardwareFrame(){
+
+    }
+
+
+
+    private void init_servos () {
+
+        servo1  = hwMap.get(Servo.class, "servo_1");
+        servo1.setPosition(0);
+
+    }
+
+
+
+    private void init_sensors() {
+
+        gyroSensor = hwMap.get(ModernRoboticsI2cGyro.class, "gyro_sensor");
+        gyroSensor.calibrate();
+
+        colorSensor = hwMap.get(ColorSensor.class, "color_sensor");
+        colorSensor.enableLed(true);
+
+        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range_sensor");
+        rangeSensor.enableLed(true);
+
+    }
+
+
+
+    private void init_scoring() {
+
+        blockTray = hwMap.get(DcMotor.class, "block_tray");
+        intakePos = hwMap.get(DcMotor.class, "intake_pos");
+        rollers = hwMap.get(DcMotor.class, "rollers");
 
     }
 
@@ -67,6 +115,12 @@ public class HardwareFrame {
         hwMap = ahwMap;
 
         init_drive();
+
+        init_scoring();
+
+        init_servos();
+
+        init_sensors();
 
     }
 

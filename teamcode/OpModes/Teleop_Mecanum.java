@@ -11,7 +11,6 @@ import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 /**
  * Created by Maximos on 10/27/2017.
  */
-@TeleOp(name="Mecanum Drive", group="TeleOp")
 public class Teleop_Mecanum extends LinearOpMode {
 
     
@@ -22,8 +21,8 @@ public class Teleop_Mecanum extends LinearOpMode {
 
     private double multiplyer = 1;
     private double liftCoef = 1;
-    public static double a = 17.35/2;
-    public static double b = 12.5/2;
+    public static double a = 10.5/2;
+    public static double b = 17/2;
 
     @Override
     public void runOpMode() throws InterruptedException {
