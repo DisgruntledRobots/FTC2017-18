@@ -54,7 +54,6 @@ public class HardwareFrame {
     private void init_sensors() {
 
         gyroSensor = hwMap.get(ModernRoboticsI2cGyro.class, "gyro_sensor");
-        gyroSensor.calibrate();
 
         colorSensor = hwMap.get(ColorSensor.class, "color_sensor");
         colorSensor.enableLed(true);
