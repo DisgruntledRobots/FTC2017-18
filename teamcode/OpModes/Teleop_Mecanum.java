@@ -11,6 +11,7 @@ import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 /**
  * Created by Maximos on 10/27/2017.
  */
+@TeleOp(name="Mecanum Drive: Main", group="TeleOp")
 public class Teleop_Mecanum extends LinearOpMode {
 
     
@@ -89,6 +90,10 @@ public class Teleop_Mecanum extends LinearOpMode {
                 telemetry.update();
 
             }
+
+            robot.rollers.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+            robot.intakePos.setPower(0.5 * gamepad2.right_stick_y);
+            robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
 
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }

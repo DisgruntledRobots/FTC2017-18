@@ -1,31 +1,16 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode.OpModes;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 /**
- * Created by 5815-Disgruntled on 11/25/2017.
+ * Created by Maximos on 11/30/2017.
  */
-@TeleOp(name="Mecanum Drive: Test", group="Tests")
-public class Teleop_Mecanum_New extends LinearOpMode {
-
-
-
+@TeleOp(name="Mecanum Drive: Test2", group="Tests")
+public class Teleop_mecanum_New2 extends LinearOpMode {
     /* Declare OpMode members. */
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFrame robot = new HardwareFrame();
@@ -89,8 +74,8 @@ public class Teleop_Mecanum_New extends LinearOpMode {
                 double targetForceY = Math.sin(direction) * rightDriveStickHypot;
 
                 robot.frontLeftMotor.setPower(targetForceY);
-                robot.frontRightMotor.setPower(targetForceX);
-                robot.backLeftMotor.setPower(targetForceX);
+                robot.frontRightMotor.setPower(-targetForceX);
+                robot.backLeftMotor.setPower(-targetForceX);
                 robot.backRightMotor.setPower(targetForceY);
 
                 telemetry.addData("Drive mode: ", "Mecanum");
@@ -166,5 +151,4 @@ public class Teleop_Mecanum_New extends LinearOpMode {
         telemetry.addData("Range, ultrasonic", robot.rangeSensor.cmUltrasonic());*/
 
     }
-
 }

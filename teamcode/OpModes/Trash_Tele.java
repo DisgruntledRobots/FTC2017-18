@@ -1,28 +1,16 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode.OpModes;
 
-import android.app.Activity;
-import android.graphics.Color;
-import android.view.View;
-
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.ColorSensor;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 /**
- * Created by 5815-Disgruntled on 11/25/2017.
+ * Created by Maximos on 11/30/2017.
  */
-@TeleOp(name="Mecanum Drive: Test", group="Tests")
-public class Teleop_Mecanum_New extends LinearOpMode {
+@TeleOp(name="Trash Tele", group="Tests")
+public class Trash_Tele extends LinearOpMode {
 
 
 
@@ -34,14 +22,14 @@ public class Teleop_Mecanum_New extends LinearOpMode {
     public static double a = 10.5/2;
     public static double b = 17/2;
 
-    public double leftDriveStickX;
-    public double leftDriveStickY;
+    public float leftDriveStickX;
+    public float leftDriveStickY;
     public boolean leftDriveStickEngaged;
     public double leftDriveStickAngle;
     public double leftDriveStickHypot;
 
-    public double rightDriveStickX;
-    public double rightDriveStickY;
+    public float rightDriveStickX;
+    public float rightDriveStickY;
     public boolean rightDriveStickEngaged;
     public double rightDriveStickAngle;
     public double rightDriveStickHypot;
@@ -76,43 +64,17 @@ public class Teleop_Mecanum_New extends LinearOpMode {
             //cartesian coordinates and angle of left joystick on gamepad 1
             telemetry.addData("Left coords: ", "X: " + leftDriveStickX + ", Y: " + leftDriveStickY);
             telemetry.addData("Left angle: ", leftDriveStickAngle);
+            telemetry.addData("Left power: ", leftDriveStickHypot);
 
             //cartesian coordinates and angle of right joystick on gamepad 1
             telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
             telemetry.addData("Right angle: ", rightDriveStickAngle);
-
-            // mecanum drive if right bumper is held, and tank drive if not
-            if( gamepad1.right_bumper ) {
-
-                double direction = (Math.PI / 4) + rightDriveStickAngle;
-                double targetForceX = Math.cos(direction) * rightDriveStickHypot;
-                double targetForceY = Math.sin(direction) * rightDriveStickHypot;
-
-                robot.frontLeftMotor.setPower(targetForceY);
-                robot.frontRightMotor.setPower(targetForceX);
-                robot.backLeftMotor.setPower(targetForceX);
-                robot.backRightMotor.setPower(targetForceY);
-
-                telemetry.addData("Drive mode: ", "Mecanum");
-
-            } else {
-
-                robot.frontLeftMotor.setPower(leftDriveStickY);
-                robot.frontRightMotor.setPower(rightDriveStickY);
-                robot.backRightMotor.setPower(rightDriveStickY);
-                robot.backLeftMotor.setPower(leftDriveStickY);
-                telemetry.addData("Drive mode: ", "Tank");
-
-            }
-
-
+            telemetry.addData("Right power: ", rightDriveStickHypot);
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
 
         }
-
-
 
     }
 
@@ -151,20 +113,5 @@ public class Teleop_Mecanum_New extends LinearOpMode {
     }
 
 
-
-    public void readSensors() {
-
-        telemetry.addData("Heading: ", robot.gyroSensor.getHeading());
-        telemetry.addData("X: ", robot.gyroSensor.rawX());
-        telemetry.addData("Y: ", robot.gyroSensor.rawY());
-        telemetry.addData("Z: ", robot.gyroSensor.rawZ());
-        /*telemetry.addData("RGB",
-                robot.colorSensor.red() + ", "
-                        + robot.colorSensor.green() + ", "
-                        + robot.colorSensor.blue()
-        );
-        telemetry.addData("Range, ultrasonic", robot.rangeSensor.cmUltrasonic());*/
-
-    }
 
 }
