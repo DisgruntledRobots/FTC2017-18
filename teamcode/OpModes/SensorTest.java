@@ -43,6 +43,19 @@ public class SensorTest extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
+        telemetry.addData("Status: ", "Calibrating Gyro");
+        telemetry.update();
+        robot.gyroSensor.calibrate();
+        while(robot.gyroSensor.isCalibrating()) {
+
+            //do nothing
+
+        }
+
+        telemetry.clear();
+        telemetry.update();
+
+
         while(opModeIsActive()) {
 
             telemetry.addData("Light: ", robot.colorSensor.alpha());
@@ -53,6 +66,8 @@ public class SensorTest extends LinearOpMode {
             telemetry.addData("Gyro: ", robot.gyroSensor.getHeading());
 
             telemetry.addData("Range: ", robot.rangeSensor.cmUltrasonic());
+
+            telemetry.update();
 
         }
 

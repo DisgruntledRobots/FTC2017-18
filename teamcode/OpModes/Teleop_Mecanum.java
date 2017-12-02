@@ -20,32 +20,22 @@ public class Teleop_Mecanum extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
     HardwareFrame robot = new HardwareFrame();
 
-    private double multiplyer = 1;
-    private double liftCoef = 1;
-    public static double a = 10.5/2;
-    public static double b = 17/2;
+    public double leftDriveStickX;
+    public double leftDriveStickY;
+    public boolean leftDriveStickEngaged;
+    public double leftDriveStickAngle;
+    public double leftDriveStickHypot;
+
+    public double rightDriveStickX;
+    public double rightDriveStickY;
+    public boolean rightDriveStickEngaged;
+    public double rightDriveStickAngle;
+    public double rightDriveStickHypot;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        
-        telemetry.addData("Status", "Initialized");
-        telemetry.update();
 
         robot.init(hardwareMap);
-
-
-
-        /* eg: Initialize the hardware variables. Note that the strings used here as parameters
-         * to 'get' must correspond to the names assigned during the robot configuration
-         * step (using the FTC Robot Controller app on the phone).
-         */
-        // leftMotor  = hardwareMap.dcMotor.get("left motor");
-        // rightMotor = hardwareMap.dcMotor.get("right motor");
-
-        // eg: Set the drive motor directions:
-        // "Reverse" the motor that runs backwards when connected directly to the battery
-        // leftMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-        // rightMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -53,41 +43,40 @@ public class Teleop_Mecanum extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
             telemetry.addData("Status", "Run Time: " + runtime.toString());
-            //telemetry.addData("Drive", gamepad1.left_stick_x);
-            telemetry.update();
 
+            getStickValues();
 
+            //cartesian coordinates and angle of left joystick on gamepad 1
+            telemetry.addData("Left coords: ", "X: " + leftDriveStickX + ", Y: " + leftDriveStickY);
+            telemetry.addData("Left angle: ", leftDriveStickAngle);
+
+            //cartesian coordinates and angle of right joystick on gamepad 1
+            telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
+            telemetry.addData("Right angle: ", rightDriveStickAngle);
 
             // mecanum drive if right bumper is held, and tank drive if not
             if( gamepad1.right_bumper ) {
 
-                robot.frontRightMotor.setPower(
-                        (-gamepad1.left_stick_y - gamepad1.left_stick_x + -gamepad1.right_stick_x * (a + b))*multiplyer
-                );
+                double direction = (Math.PI / 4) + leftDriveStickAngle;
+                double targetForceX = Math.cos(direction) * leftDriveStickHypot;
+                double targetForceY = Math.sin(direction) * leftDriveStickHypot;
 
-                robot.frontLeftMotor.setPower(
-                        (-gamepad1.left_stick_y + gamepad1.left_stick_x - -gamepad1.right_stick_x * (a + b))*multiplyer
-                );
+                robot.frontLeftMotor.setPower(targetForceY);
+                robot.frontRightMotor.setPower(-targetForceX);
+                robot.backLeftMotor.setPower(-targetForceX);
+                robot.backRightMotor.setPower(targetForceY);
 
-                robot.backLeftMotor.setPower(
-                        (-gamepad1.left_stick_y - gamepad1.left_stick_x - -gamepad1.right_stick_x * (a + b))*multiplyer
-                );
-
-                robot.backRightMotor.setPower(
-                        (-gamepad1.left_stick_y + gamepad1.left_stick_x + -gamepad1.right_stick_x * (a + b))*multiplyer
-                );
-                telemetry.addData("Debug", "In mecanum drive");
-                telemetry.update();
+                telemetry.addData("Drive mode: ", "Mecanum");
 
             } else {
 
-                robot.frontLeftMotor.setPower((-gamepad1.left_stick_y)*multiplyer);
-                robot.frontRightMotor.setPower((-gamepad1.right_stick_y)*multiplyer);
-                robot.backRightMotor.setPower((-gamepad1.right_stick_y)*multiplyer);
-                robot.backLeftMotor.setPower((-gamepad1.left_stick_y)*multiplyer);
-                telemetry.addData("Debug", "In tank drive");
-                telemetry.update();
+                robot.frontLeftMotor.setPower(leftDriveStickY);
+                robot.frontRightMotor.setPower(rightDriveStickY);
+                robot.backRightMotor.setPower(rightDriveStickY);
+                robot.backLeftMotor.setPower(leftDriveStickY);
+                telemetry.addData("Drive mode: ", "Tank");
 
             }
 
@@ -100,6 +89,57 @@ public class Teleop_Mecanum extends LinearOpMode {
         
         
         
+    }
+
+
+
+    public void getStickValues() {
+
+        leftDriveStickX = gamepad1.left_stick_x;
+        leftDriveStickY = gamepad1.left_stick_y != 0 ? -gamepad1.left_stick_y : gamepad1.left_stick_y;
+        if( (leftDriveStickX != 0) || (leftDriveStickY != 0) ) {
+
+            leftDriveStickEngaged = true;
+
+        } else {
+
+            leftDriveStickEngaged = false;
+
+        }
+        leftDriveStickAngle = Math.atan2(leftDriveStickY, leftDriveStickX);
+        leftDriveStickHypot = Math.hypot(leftDriveStickX,leftDriveStickY);
+
+        rightDriveStickX = gamepad1.right_stick_x;
+        rightDriveStickY = gamepad1.right_stick_y != 0 ? -gamepad1.right_stick_y : gamepad1.right_stick_y;
+        if( (rightDriveStickX != 0) || (rightDriveStickY != 0) ) {
+
+            rightDriveStickEngaged = true;
+
+        } else {
+
+            rightDriveStickEngaged = false;
+
+        }
+        rightDriveStickAngle = Math.atan2(rightDriveStickY, rightDriveStickX);
+        rightDriveStickHypot = Math.hypot(rightDriveStickX,rightDriveStickY);
+
+    }
+
+
+
+    public void readSensors() {
+
+        telemetry.addData("Heading: ", robot.gyroSensor.getHeading());
+        telemetry.addData("X: ", robot.gyroSensor.rawX());
+        telemetry.addData("Y: ", robot.gyroSensor.rawY());
+        telemetry.addData("Z: ", robot.gyroSensor.rawZ());
+        /*telemetry.addData("RGB",
+                robot.colorSensor.red() + ", "
+                        + robot.colorSensor.green() + ", "
+                        + robot.colorSensor.blue()
+        );
+        telemetry.addData("Range, ultrasonic", robot.rangeSensor.cmUltrasonic());*/
+
     }
 
 }
