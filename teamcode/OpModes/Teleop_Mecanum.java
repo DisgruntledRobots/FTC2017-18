@@ -62,11 +62,13 @@ public class Teleop_Mecanum extends LinearOpMode {
                 double direction = (Math.PI / 4) + leftDriveStickAngle;
                 double targetForceX = Math.cos(direction) * leftDriveStickHypot;
                 double targetForceY = Math.sin(direction) * leftDriveStickHypot;
+                double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
+                double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
 
-                robot.frontLeftMotor.setPower(targetForceY);
-                robot.frontRightMotor.setPower(-targetForceX);
-                robot.backLeftMotor.setPower(-targetForceX);
-                robot.backRightMotor.setPower(targetForceY);
+                robot.frontLeftMotor.setPower(targetForceY + leftTurn);
+                robot.frontRightMotor.setPower(-targetForceX + rightTurn);
+                robot.backLeftMotor.setPower(-targetForceX + leftTurn);
+                robot.backRightMotor.setPower(targetForceY + rightTurn);
 
                 telemetry.addData("Drive mode: ", "Mecanum");
 
