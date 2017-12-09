@@ -9,10 +9,12 @@ import org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils.TimedDriver;
 import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 
 /**
- * Created by Maximos on 11/30/2017.
+ * Created by Maximos on 12/9/2017.
  */
-@Autonomous(name="Trash Auto", group="Tests")
-public class Trash_Auto extends LinearOpMode {
+@Autonomous(name="Blue Left", group="Autonomous")
+public class AutoBlueLeft extends LinearOpMode {
+
+
 
     private static final double DRIVE_SPEED = 0.6;
     private static final double TURN_SPEED = 0.5;
@@ -24,7 +26,7 @@ public class Trash_Auto extends LinearOpMode {
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
-    public void runOpMode() {
+    public void runOpMode() throws InterruptedException {
 
         //Initialize hardware and scheduler
         robot.init(hardwareMap);
@@ -42,12 +44,24 @@ public class Trash_Auto extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        while(opModeIsActive()) {
+        telemetry.addData("Status: ", "Calibrating Gyro");
+        telemetry.update();
+        robot.gyroSensor.calibrate();
+        while(robot.gyroSensor.isCalibrating()) {
 
-            drive.forward(2.0, 5.0);
-            drive.forward(1.0, 5.0);
+            //do nothing
 
         }
+
+        telemetry.clear();
+        telemetry.addData("Status: ", "Running");
+        telemetry.update();
+
+        //score a glyph
+        drive.backward(DRIVE_SPEED, 5.0);
+        drive.rotateLeft(TURN_SPEED, 45.0);
+        drive.forward(DRIVE_SPEED, 2.0);
+        drive.backward(DRIVE_SPEED, 1.0);
 
         //Indicate smooth ending to opmode
         telemetry.addData("Status: ", "Ending");
@@ -55,5 +69,7 @@ public class Trash_Auto extends LinearOpMode {
 
 
     }
+
+
 
 }

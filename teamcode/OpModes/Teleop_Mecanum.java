@@ -86,6 +86,21 @@ public class Teleop_Mecanum extends LinearOpMode {
             robot.intakePos.setPower(0.5 * gamepad2.right_stick_y);
             robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
 
+            /*if( gamepad1.a ) {
+
+                robot.servo1.setPosition(-1);
+
+            } else if( gamepad1.x ) {
+
+                robot.servo1.setPosition(0);
+
+            } else if( gamepad1.y ) {
+
+                robot.servo1.setPosition(1);
+
+            }*/
+
+            telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
         
