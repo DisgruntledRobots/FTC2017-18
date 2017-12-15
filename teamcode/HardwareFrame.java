@@ -42,7 +42,7 @@ public class HardwareFrame {
 
 
 
-    private void init_servos () {
+    private void init_servos() {
 
         servo1  = hwMap.get(Servo.class, "servo_1");
         servo1.setPosition(0);
