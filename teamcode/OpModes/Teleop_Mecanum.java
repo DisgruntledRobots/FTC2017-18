@@ -85,6 +85,7 @@ public class Teleop_Mecanum extends LinearOpMode {
             robot.rollers.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
             robot.intakePos.setPower(0.5 * gamepad2.right_stick_y);
             robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
+            robot.servo1.setPosition(gamepad2.left_stick_x);
 
             /*if( gamepad1.a ) {
 

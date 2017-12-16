@@ -58,10 +58,34 @@ public class AutoRedLeft extends LinearOpMode {
         telemetry.update();
 
         //score a glyph
-        drive.backward(DRIVE_SPEED, 5.0);
-        drive.rotateLeft(TURN_SPEED, 45.0);
-        drive.forward(DRIVE_SPEED, 2.0);
-        drive.backward(DRIVE_SPEED, 1.0);
+        robot.servo1.setPosition(1);
+        telemetry.addData("Red: ", robot.colorSensor.red());
+        telemetry.addData("Blue: ", robot.colorSensor.blue());
+        telemetry.update();
+        while((robot.colorSensor.alpha() < 5) && !opModeIsActive()) {
+
+            //do nothing
+
+        }
+        if( robot.colorSensor.red() > robot.colorSensor.blue() ) {
+
+            drive.rotateRight(TURN_SPEED,20.0);
+            drive.rotateLeft(TURN_SPEED,20.0);
+
+            drive.backward(DRIVE_SPEED,17.0);
+            drive.rotateRight(TURN_SPEED,180.0);
+            drive.forward(DRIVE_SPEED,13.0);
+
+        } else {
+
+            drive.rotateLeft(TURN_SPEED,20.0);
+            drive.rotateRight(TURN_SPEED,20.0);
+
+            drive.backward(DRIVE_SPEED,17.0);
+            drive.rotateRight(TURN_SPEED,180.0);
+            drive.forward(DRIVE_SPEED,13.0);
+
+        }
 
         //Indicate smooth ending to opmode
         telemetry.addData("Status: ", "Ending");
