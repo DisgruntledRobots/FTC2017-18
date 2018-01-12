@@ -24,8 +24,8 @@ public class HardwareFrame {
     public DcMotor backLeftMotor = null;
 
     public DcMotor blockTray = null;
-    public DcMotor intakePos = null;
-    public DcMotor rollers = null;
+    public DcMotor leftRoller = null;
+    public DcMotor rightRoller = null;
 
     public Servo servo1;
 
@@ -45,7 +45,7 @@ public class HardwareFrame {
     private void init_servos() {
 
         servo1  = hwMap.get(Servo.class, "servo_1");
-        servo1.setPosition(0);
+        servo1.setPosition(0.1);
 
     }
 
@@ -68,8 +68,8 @@ public class HardwareFrame {
     private void init_scoring() {
 
         blockTray = hwMap.get(DcMotor.class, "block_tray");
-        intakePos = hwMap.get(DcMotor.class, "intake_pos");
-        rollers = hwMap.get(DcMotor.class, "rollers");
+        rightRoller = hwMap.get(DcMotor.class, "right_roller");
+        leftRoller = hwMap.get(DcMotor.class, "left_roller");
 
     }
 
@@ -93,10 +93,15 @@ public class HardwareFrame {
         backLeftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         backRightMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        /*frontLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         frontRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         backLeftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);*/
+
+        frontLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        frontRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backLeftMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        backRightMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
         frontLeftMotor.setPower(0);
         frontRightMotor.setPower(0);

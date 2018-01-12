@@ -7,10 +7,10 @@ import com.qualcomm.robotcore.util.ElapsedTime;
 import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 
 /**
- * Created by Maximos on 12/9/2017.
+ * Created by Maximos on 1/8/2018.
  */
-@TeleOp(name="Mecanum Drive: Slow", group="TeleOp")
-public class Teleop_Mecanum_Slow extends LinearOpMode {
+@TeleOp(name="Mecanum Drive: Test", group="TeleOp")
+public class ControlsTest extends LinearOpMode {
 
 
 
@@ -54,49 +54,18 @@ public class Teleop_Mecanum_Slow extends LinearOpMode {
             telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
             telemetry.addData("Right angle: ", rightDriveStickAngle);
 
-            // mecanum drive if right bumper is held, and tank drive if not
-            if( gamepad1.right_bumper ) {
+            double direction = (Math.PI / 4) + leftDriveStickAngle;
+            double targetForceX = Math.cos(direction) * leftDriveStickHypot;
+            double targetForceY = Math.sin(direction) * leftDriveStickHypot;
 
-                double direction = (Math.PI / 4) + leftDriveStickAngle;
-                double targetForceX = Math.cos(direction) * leftDriveStickHypot;
-                double targetForceY = Math.sin(direction) * leftDriveStickHypot;
-                double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
-                double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
-
-                robot.frontLeftMotor.setPower(0.75 * (targetForceY + leftTurn));
-                robot.frontRightMotor.setPower(0.75 * (-targetForceX + rightTurn));
-                robot.backLeftMotor.setPower(0.75 * (-targetForceX + leftTurn));
-                robot.backRightMotor.setPower(0.75 * (targetForceY + rightTurn));
-
-                telemetry.addData("Drive mode: ", "Mecanum");
-
-            } else {
-
-                robot.frontLeftMotor.setPower(leftDriveStickY);
-                robot.frontRightMotor.setPower(rightDriveStickY);
-                robot.backRightMotor.setPower(rightDriveStickY);
-                robot.backLeftMotor.setPower(leftDriveStickY);
-                telemetry.addData("Drive mode: ", "Tank");
-
-            }
-
-            /*robot.rollers.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-            robot.intakePos.setPower(0.5 * gamepad2.right_stick_y);*/
-            robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
-
-            /*if( gamepad1.a ) {
-
-                robot.servo1.setPosition(-1);
-
-            } else if( gamepad1.x ) {
-
-                robot.servo1.setPosition(0);
-
-            } else if( gamepad1.y ) {
-
-                robot.servo1.setPosition(1);
-
-            }*/
+            telemetry.addData("Front Right: ", -targetForceX);
+            telemetry.addData("Front Left: ", targetForceY);
+            telemetry.addData("Back Left: ", targetForceX);
+            telemetry.addData("Back Right: ", -targetForceY);
+            robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
+            robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+            robot.backLeftMotor.setPower(targetForceX/* + rightDriveStickX*/);
+            robot.backRightMotor.setPower(-targetForceY/* - rightDriveStickX*/);
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop

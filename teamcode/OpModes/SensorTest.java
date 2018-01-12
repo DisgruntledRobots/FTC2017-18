@@ -46,6 +46,7 @@ public class SensorTest extends LinearOpMode {
         telemetry.addData("Status: ", "Calibrating Gyro");
         telemetry.update();
         robot.gyroSensor.calibrate();
+        robot.servo1.setPosition(1.0);
         while(robot.gyroSensor.isCalibrating()) {
 
             //do nothing

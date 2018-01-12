@@ -32,6 +32,8 @@ public class Teleop_Mecanum extends LinearOpMode {
     public double rightDriveStickAngle;
     public double rightDriveStickHypot;
 
+    boolean altControls = false;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
@@ -43,6 +45,12 @@ public class Teleop_Mecanum extends LinearOpMode {
 
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
+
+            if( gamepad2.start ) {
+
+                altControls = !altControls;
+
+            }
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
 
@@ -56,21 +64,83 @@ public class Teleop_Mecanum extends LinearOpMode {
             telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
             telemetry.addData("Right angle: ", rightDriveStickAngle);
 
-            // mecanum drive if right bumper is held, and tank drive if not
+            //if right bumper held, go into regular mecanum drive
+            //if left bumper held, go into test mecanum drive
+            //if no bumpers are held, go into tank drive
             if( gamepad1.right_bumper ) {
 
+                double multiplyer = 1;
+                double a = 17.35/2;
+                double b = 12.5/2;
+
+                telemetry.addData("Front Right: ", (leftDriveStickY - leftDriveStickX + rightDriveStickX * (a + b)));
+                robot.frontRightMotor.setPower(
+                        (leftDriveStickY - leftDriveStickX + rightDriveStickX * (a + b))
+                );
+
+                telemetry.addData("Front Left: ", (leftDriveStickY + leftDriveStickX - rightDriveStickX * (a + b)));
+                robot.frontLeftMotor.setPower(
+                        (leftDriveStickY + leftDriveStickX - rightDriveStickX * (a + b))
+                );
+
+                telemetry.addData("Back Left: ", (leftDriveStickY - leftDriveStickX - rightDriveStickX * (a + b)));
+                robot.backLeftMotor.setPower(
+                        (leftDriveStickY - leftDriveStickX - rightDriveStickX * (a + b))
+                );
+
+
+                telemetry.addData("Back Right: ", (leftDriveStickY + leftDriveStickX + rightDriveStickX * (a + b)));
+                robot.backRightMotor.setPower(
+                        (leftDriveStickY + leftDriveStickX + rightDriveStickX * (a + b))
+                );
+
+                telemetry.addData("Drive mode: ", "Mecanum");
+
+            } else if(gamepad1.left_bumper) {
+
                 double direction = (Math.PI / 4) + leftDriveStickAngle;
-                double targetForceX = Math.cos(direction) * leftDriveStickHypot;
-                double targetForceY = Math.sin(direction) * leftDriveStickHypot;
+                double targetForceX = Math.cos(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
+                double targetForceY = Math.sin(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
                 double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
                 double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
 
-                robot.frontLeftMotor.setPower(targetForceY + leftTurn);
-                robot.frontRightMotor.setPower(-targetForceX + rightTurn);
-                robot.backLeftMotor.setPower(-targetForceX + leftTurn);
-                robot.backRightMotor.setPower(targetForceY + rightTurn);
+                if( (Math.abs(targetForceX) > 1) || (Math.abs(targetForceY) > 1) ) {
 
-                telemetry.addData("Drive mode: ", "Mecanum");
+                    if (Math.abs(targetForceX) > Math.abs(targetForceY)) {
+
+                        telemetry.addData("Front Right: ", -targetForceX / Math.abs(targetForceX));
+                        telemetry.addData("Front Left: ", targetForceY / Math.abs(targetForceX));
+                        telemetry.addData("Back Left: ", -targetForceX / Math.abs(targetForceX));
+                        telemetry.addData("Back Right: ", targetForceY / Math.abs(targetForceX));
+                        robot.frontLeftMotor.setPower(targetForceY / Math.abs(targetForceX)/* - rightDriveStickX*/);
+                        robot.frontRightMotor.setPower(-targetForceX / Math.abs(targetForceX)/* + rightDriveStickX*/);
+                        robot.backLeftMotor.setPower(-targetForceX / Math.abs(targetForceX)/* + rightDriveStickX*/);
+                        robot.backRightMotor.setPower(targetForceY / Math.abs(targetForceX)/* - rightDriveStickX*/);
+
+                    } else {
+
+                        telemetry.addData("Front Right: ", -targetForceX / Math.abs(targetForceY));
+                        telemetry.addData("Front Left: ", targetForceY / Math.abs(targetForceY));
+                        telemetry.addData("Back Left: ", -targetForceX / Math.abs(targetForceY));
+                        telemetry.addData("Back Right: ", targetForceY / Math.abs(targetForceY));
+                        robot.frontLeftMotor.setPower(targetForceY / Math.abs(targetForceY)/* - rightDriveStickX*/);
+                        robot.frontRightMotor.setPower(-targetForceX / Math.abs(targetForceY)/* + rightDriveStickX*/);
+                        robot.backLeftMotor.setPower(-targetForceX / Math.abs(targetForceY)/* + rightDriveStickX*/);
+                        robot.backRightMotor.setPower(targetForceY / Math.abs(targetForceY)/* - rightDriveStickX*/);
+                    }
+
+                } else {
+
+                    telemetry.addData("Front Right: ", -targetForceX);
+                    telemetry.addData("Front Left: ", targetForceY);
+                    telemetry.addData("Back Left: ", -targetForceX);
+                    telemetry.addData("Back Right: ", targetForceY);
+                    robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
+                    robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+                    robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+                    robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
+
+                }
 
             } else {
 
@@ -82,24 +152,19 @@ public class Teleop_Mecanum extends LinearOpMode {
 
             }
 
-            robot.rollers.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-            robot.intakePos.setPower(0.5 * gamepad2.right_stick_y);
-            robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
-            robot.servo1.setPosition(gamepad2.left_stick_x);
+            if( !altControls ) {
 
-            /*if( gamepad1.a ) {
+                robot.rightRoller.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                robot.leftRoller.setPower(-gamepad2.right_trigger + gamepad2.left_trigger);
+                robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
 
-                robot.servo1.setPosition(-1);
+            } else {
 
-            } else if( gamepad1.x ) {
+                robot.leftRoller.setPower(gamepad2.right_stick_y);
+                robot.rightRoller.setPower(-gamepad2.left_stick_y);
+                robot.blockTray.setPower(0.50 * (gamepad2.left_trigger - gamepad2.right_trigger));
 
-                robot.servo1.setPosition(0);
-
-            } else if( gamepad1.y ) {
-
-                robot.servo1.setPosition(1);
-
-            }*/
+            }
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop

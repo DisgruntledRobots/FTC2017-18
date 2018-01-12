@@ -9,10 +9,10 @@ import org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils.TimedDriver;
 import org.firstinspires.ftc.FTC2017_18.teamcode.HardwareFrame;
 
 /**
- * Created by Maximos on 12/8/2017.
+ * Created by Maximos on 12/30/2017.
  */
-@Autonomous(name="Red Left", group="Autonomous")
-public class AutoRedLeft extends LinearOpMode {
+@Autonomous(name="Far Red", group="Autonomous")
+public class AutoFarRed extends LinearOpMode {
 
 
 
@@ -27,6 +27,8 @@ public class AutoRedLeft extends LinearOpMode {
 
     @Override
     public void runOpMode() throws InterruptedException {
+
+        double adjust = 0;
 
         //Initialize hardware and scheduler
         robot.init(hardwareMap);
@@ -57,33 +59,84 @@ public class AutoRedLeft extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
 
-        //score a glyph
+        //read jewel
         robot.servo1.setPosition(1);
         telemetry.addData("Red: ", robot.colorSensor.red());
         telemetry.addData("Blue: ", robot.colorSensor.blue());
         telemetry.update();
-        while((robot.colorSensor.alpha() < 5) && !opModeIsActive()) {
+        runtime.reset();
+        while((runtime.seconds() < 2) && opModeIsActive()) {
 
-            //do nothing
+            //do nothing, waiting for servo
 
         }
+
+        while(robot.colorSensor.red() == robot.colorSensor.blue()) {
+
+            drive.rotateLeft(TURN_SPEED, 0.01);
+            adjust += 0.01;
+
+        }
+
         if( robot.colorSensor.red() > robot.colorSensor.blue() ) {
 
-            drive.rotateRight(TURN_SPEED,20.0);
-            drive.rotateLeft(TURN_SPEED,20.0);
+            //jerk right
+            drive.rotateRight(0.5 * TURN_SPEED,45.0 + adjust);
+            robot.servo1.setPosition(0);
+            runtime.reset();
+            while( (runtime.seconds() < 2) && opModeIsActive() ) {
 
-            drive.backward(DRIVE_SPEED,17.0);
-            drive.rotateRight(TURN_SPEED,180.0);
-            drive.forward(DRIVE_SPEED,13.0);
+                //do nothing, waiting for servo arm to move up
+
+            }
+            drive.rotateLeft(0.5 * TURN_SPEED,45.0);
+
+            //park
+            drive.backward(DRIVE_SPEED,15.0);
+            drive.rotateLeft(TURN_SPEED, 15.0);
+            runtime.reset();
+            while(opModeIsActive() && (runtime.seconds() < 3)) {
+
+                robot.blockTray.setPower(1.0);
+
+            }
+
+            runtime.reset();
+            while(opModeIsActive() && (runtime.seconds() < 3)) {
+
+                robot.blockTray.setPower(-1.0);
+
+            }
 
         } else {
 
-            drive.rotateLeft(TURN_SPEED,20.0);
-            drive.rotateRight(TURN_SPEED,20.0);
+            //jerk left
+            drive.rotateLeft(0.5 * TURN_SPEED,45.0 - adjust);
+            robot.servo1.setPosition(0);
+            runtime.reset();
+            while( (runtime.seconds() < 2) && opModeIsActive() ) {
 
-            drive.backward(DRIVE_SPEED,17.0);
-            drive.rotateRight(TURN_SPEED,180.0);
-            drive.forward(DRIVE_SPEED,13.0);
+                //do nothing, waiting for servo arm to move up
+
+            }
+            drive.rotateRight(0.5 * TURN_SPEED,45.0);
+
+            //park
+            drive.backward(DRIVE_SPEED,15.0);
+            drive.rotateLeft(TURN_SPEED, 15.0);
+            runtime.reset();
+            while(opModeIsActive() && (runtime.seconds() < 3)) {
+
+                robot.blockTray.setPower(1.0);
+
+            }
+
+            runtime.reset();
+            while(opModeIsActive() && (runtime.seconds() < 3)) {
+
+                robot.blockTray.setPower(-1.0);
+
+            }
 
         }
 
