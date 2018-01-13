@@ -76,21 +76,17 @@ public class AutoNearRed extends LinearOpMode {
             drive.rotateLeft(0.5 * TURN_SPEED,45.0);
 
             //park
-            drive.backward(DRIVE_SPEED,12.0);
-            drive.rotateRight(0.5 * TURN_SPEED, 45.0);
+            drive.forward(DRIVE_SPEED,12.0);
+            drive.rotateRight(0.5 * TURN_SPEED, 90.0);
+            drive.forward(DRIVE_SPEED, 5.0);
             runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
+            while(opModeIsActive() && (runtime.seconds() <= 5)) {
 
-                robot.blockTray.setPower(-1.0);
+                robot.rightRoller.setPower(1.0);
+                robot.leftRoller.setPower(1.0);
 
             }
-
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
-
-                robot.blockTray.setPower(1.0);
-
-            }
+            drive.backward(DRIVE_SPEED, 3.0);
 
         } else {
 
@@ -99,21 +95,17 @@ public class AutoNearRed extends LinearOpMode {
             drive.rotateRight(0.5 * TURN_SPEED,45.0);
 
             //park
-            drive.backward(DRIVE_SPEED,12.0);
-            drive.rotateRight(0.5 * TURN_SPEED, 45.0);
+            drive.forward(DRIVE_SPEED,12.0);
+            drive.rotateRight(0.5 * TURN_SPEED, 90.0);
+            drive.forward(DRIVE_SPEED, 5.0);
             runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
+            while(opModeIsActive() && (runtime.seconds() <= 5)) {
 
-                robot.blockTray.setPower(-1.0);
+                robot.rightRoller.setPower(1.0);
+                robot.leftRoller.setPower(1.0);
 
             }
-
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
-
-                robot.blockTray.setPower(1.0);
-
-            }
+            drive.backward(DRIVE_SPEED, 3.0);
 
         }
 

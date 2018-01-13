@@ -91,23 +91,20 @@ public class AutoFarBlue extends LinearOpMode {
             }
             drive.rotateLeft(0.5 * TURN_SPEED,45.0);
 
-            //park
-            drive.rotateLeft(0.5 * TURN_SPEED, 170.0);
-            drive.backward(DRIVE_SPEED,15.0);
+            //align with cryptobox
+            drive.forward(DRIVE_SPEED, 10.0);
             drive.rotateRight(TURN_SPEED, 15.0);
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
 
-                robot.blockTray.setPower(1.0);
+            //score glyph
+            drive.forward(DRIVE_SPEED, 5.0);
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.rightRoller.setPower(1.0);
+                robot.leftRoller.setPower(1.0);
 
             }
-
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
-
-                robot.blockTray.setPower(-1.0);
-
-            }
+            drive.backward(DRIVE_SPEED, 3.0);
 
         } else {
 
@@ -122,23 +119,20 @@ public class AutoFarBlue extends LinearOpMode {
             }
             drive.rotateRight(0.5 * TURN_SPEED,45.0);
 
-            //park
-            drive.rotateLeft(0.5 * TURN_SPEED, 170.0);
-            drive.backward(DRIVE_SPEED,15.0);
+            //align with cryptobox
+            drive.forward(DRIVE_SPEED, 10.0);
             drive.rotateRight(TURN_SPEED, 15.0);
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
 
-                robot.blockTray.setPower(1.0);
+            //score glyph
+            drive.forward(DRIVE_SPEED, 5.0);
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.rightRoller.setPower(1.0);
+                robot.leftRoller.setPower(1.0);
 
             }
-
-            runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() < 3)) {
-
-                robot.blockTray.setPower(-1.0);
-
-            }
+            drive.backward(DRIVE_SPEED, 3.0);
 
         }
 
