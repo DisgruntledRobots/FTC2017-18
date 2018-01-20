@@ -54,19 +54,6 @@ public class ControlsTest extends LinearOpMode {
             telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
             telemetry.addData("Right angle: ", rightDriveStickAngle);
 
-            double direction = (Math.PI / 4) + leftDriveStickAngle;
-            double targetForceX = Math.cos(direction) * leftDriveStickHypot;
-            double targetForceY = Math.sin(direction) * leftDriveStickHypot;
-
-            telemetry.addData("Front Right: ", -targetForceX);
-            telemetry.addData("Front Left: ", targetForceY);
-            telemetry.addData("Back Left: ", targetForceX);
-            telemetry.addData("Back Right: ", -targetForceY);
-            robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
-            robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-            robot.backLeftMotor.setPower(targetForceX/* + rightDriveStickX*/);
-            robot.backRightMotor.setPower(-targetForceY/* - rightDriveStickX*/);
-
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }

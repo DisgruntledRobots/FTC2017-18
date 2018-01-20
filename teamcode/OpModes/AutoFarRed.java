@@ -18,6 +18,7 @@ public class AutoFarRed extends LinearOpMode {
 
     private static final double DRIVE_SPEED = 0.6;
     private static final double TURN_SPEED = 0.5;
+    private static final double STONE_TO_PARK = 28.0;
 
     private static DcMotor[] motors = new DcMotor[4];
 
@@ -78,10 +79,15 @@ public class AutoFarRed extends LinearOpMode {
 
         }
 
+        telemetry.clear();
         if( robot.colorSensor.red() > robot.colorSensor.blue() ) {
 
             //jerk right
+            telemetry.addData("Action: ", "Knocking off blue jewel to the right");
+            telemetry.update();
             drive.rotateRight(0.5 * TURN_SPEED,45.0 + adjust);
+            telemetry.addData("Action: ", "Bringing arm back up");
+            telemetry.update();
             robot.servo1.setPosition(0);
             runtime.reset();
             while( (runtime.seconds() < 2) && opModeIsActive() ) {
@@ -89,22 +95,34 @@ public class AutoFarRed extends LinearOpMode {
                 //do nothing, waiting for servo arm to move up
 
             }
+            telemetry.addData("Action: ", "Straightening out on stone");
+            telemetry.update();
             drive.rotateLeft(0.5 * TURN_SPEED,45.0);
 
             //align with cryptobox
-            drive.forward(DRIVE_SPEED, 10.0);
+            telemetry.addData("Action: ", "Driving to cryptobox");
+            telemetry.update();
+            drive.backward(DRIVE_SPEED, STONE_TO_PARK);
+            telemetry.addData("Action: ", "Aiming glyph");
+            telemetry.update();
             drive.rotateLeft(TURN_SPEED, 15.0);
 
             //score glyph
-            drive.forward(DRIVE_SPEED, 5.0);
+            telemetry.addData("Action: ", "Firing glyph");
+            telemetry.update();
             runtime.reset();
             while( opModeIsActive() && (runtime.seconds() <= 5) ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                robot.blockTray.setPower(-DRIVE_SPEED);
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         } else {
 
@@ -120,19 +138,23 @@ public class AutoFarRed extends LinearOpMode {
             drive.rotateRight(0.5 * TURN_SPEED,45.0);
 
             //align with cryptobox
-            drive.forward(DRIVE_SPEED, 10.0);
+            drive.backward(DRIVE_SPEED, STONE_TO_PARK);
             drive.rotateLeft(TURN_SPEED, 15.0);
 
             //score glyph
-            drive.forward(DRIVE_SPEED, 5.0);
             runtime.reset();
             while( opModeIsActive() && (runtime.seconds() <= 5) ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                robot.blockTray.setPower(-DRIVE_SPEED);
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         }
 

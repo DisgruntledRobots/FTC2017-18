@@ -18,6 +18,7 @@ public class AutoFarBlue extends LinearOpMode {
 
     private static final double DRIVE_SPEED = 0.6;
     private static final double TURN_SPEED = 0.5;
+    private static final double STONE_TO_PARK = 28.0;
 
     private static DcMotor[] motors = new DcMotor[4];
 
@@ -92,19 +93,25 @@ public class AutoFarBlue extends LinearOpMode {
             drive.rotateLeft(0.5 * TURN_SPEED,45.0);
 
             //align with cryptobox
-            drive.forward(DRIVE_SPEED, 10.0);
+            drive.forward(DRIVE_SPEED, 0.5 * STONE_TO_PARK);
+            drive.rotateLeft(TURN_SPEED, 90.0);
+            drive.backward(DRIVE_SPEED, 0.5 * STONE_TO_PARK);
             drive.rotateRight(TURN_SPEED, 15.0);
 
             //score glyph
-            drive.forward(DRIVE_SPEED, 5.0);
             runtime.reset();
             while( opModeIsActive() && (runtime.seconds() <= 5) ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                robot.blockTray.setPower(-DRIVE_SPEED);
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         } else {
 
@@ -120,19 +127,25 @@ public class AutoFarBlue extends LinearOpMode {
             drive.rotateRight(0.5 * TURN_SPEED,45.0);
 
             //align with cryptobox
-            drive.forward(DRIVE_SPEED, 10.0);
+            drive.forward(DRIVE_SPEED, 0.5 * STONE_TO_PARK);
+            drive.rotateLeft(TURN_SPEED, 90.0);
+            drive.backward(DRIVE_SPEED, 0.5 * STONE_TO_PARK);
             drive.rotateRight(TURN_SPEED, 15.0);
 
             //score glyph
-            drive.forward(DRIVE_SPEED, 5.0);
             runtime.reset();
             while( opModeIsActive() && (runtime.seconds() <= 5) ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                robot.blockTray.setPower(-DRIVE_SPEED);
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         }
 

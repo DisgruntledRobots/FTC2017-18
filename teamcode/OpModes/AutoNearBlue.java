@@ -18,12 +18,14 @@ public class AutoNearBlue extends LinearOpMode {
 
     private static final double DRIVE_SPEED = 0.6;
     private static final double TURN_SPEED = 0.5;
+    private static final double STONE_TO_PARK = 28.0;
 
     private static DcMotor[] motors = new DcMotor[4];
 
     public HardwareFrame robot = new HardwareFrame();
     private TimedDriver drive;
     private ElapsedTime runtime = new ElapsedTime();
+    private double adjust = 0;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -63,48 +65,82 @@ public class AutoNearBlue extends LinearOpMode {
         telemetry.addData("Blue: ", robot.colorSensor.blue());
         telemetry.update();
         runtime.reset();
-        while((runtime.seconds() < 5) && opModeIsActive()) {
+        while((runtime.seconds() < 2) && opModeIsActive()) {
 
             //do nothing, waiting for servo to lower
 
         }
+
+        while(robot.colorSensor.red() == robot.colorSensor.blue()) {
+
+            drive.rotateLeft(TURN_SPEED, 0.01);
+            adjust += 0.01;
+
+        }
+
         if( robot.colorSensor.blue() > robot.colorSensor.red() ) {
 
             //jerk right
-            drive.rotateRight(0.5 * TURN_SPEED,45.0);
-            drive.rotateLeft(0.5 * TURN_SPEED,45.0);
-
-            //park
-            drive.forward(DRIVE_SPEED,12.0);
-            drive.rotateLeft(0.5 * TURN_SPEED, 90.0);
-            drive.forward(DRIVE_SPEED, 5.0);
+            drive.rotateRight(0.5 * TURN_SPEED,45.0 + adjust);
+            robot.servo1.setPosition(0);
             runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() <= 5)) {
+            while( (runtime.seconds() < 2) && opModeIsActive() ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                //do nothing, waiting for servo arm to move up
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+            drive.rotateLeft(0.5 * TURN_SPEED,45.0);
+
+            //align with cryptobox
+            drive.forward(DRIVE_SPEED, STONE_TO_PARK);
+            drive.rotateRight(TURN_SPEED, 45.0);
+
+            //score glyph
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(-DRIVE_SPEED);
+
+            }
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         } else {
 
             //jerk left
-            drive.rotateLeft(0.5 * TURN_SPEED,45.0);
-            drive.rotateRight(0.5 * TURN_SPEED,45.0);
-
-            //park
-            drive.forward(DRIVE_SPEED,12.0);
-            drive.rotateLeft(0.5 * TURN_SPEED, 90.0);
-            drive.forward(DRIVE_SPEED, 5.0);
+            drive.rotateLeft(0.5 * TURN_SPEED,45.0 - adjust);
+            robot.servo1.setPosition(0);
             runtime.reset();
-            while(opModeIsActive() && (runtime.seconds() <= 5)) {
+            while( (runtime.seconds() < 2) && opModeIsActive() ) {
 
-                robot.rightRoller.setPower(1.0);
-                robot.leftRoller.setPower(1.0);
+                //do nothing, waiting for servo arm to move up
 
             }
-            drive.backward(DRIVE_SPEED, 3.0);
+            drive.rotateRight(0.5 * TURN_SPEED,45.0);
+
+            //align with cryptobox
+            drive.forward(DRIVE_SPEED, STONE_TO_PARK);
+            drive.rotateRight(TURN_SPEED, 45.0);
+
+            //score glyph
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(-DRIVE_SPEED);
+
+            }
+
+            runtime.reset();
+            while( opModeIsActive() && (runtime.seconds() <= 5) ) {
+
+                robot.blockTray.setPower(+DRIVE_SPEED);
+
+            }
 
         }
 

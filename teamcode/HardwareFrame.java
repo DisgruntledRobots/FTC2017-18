@@ -58,8 +58,8 @@ public class HardwareFrame {
         colorSensor = hwMap.get(ColorSensor.class, "color_sensor");
         colorSensor.enableLed(true);
 
-        rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range_sensor");
-        rangeSensor.enableLed(true);
+        /*rangeSensor = hwMap.get(ModernRoboticsI2cRangeSensor.class, "range_sensor");
+        rangeSensor.enableLed(true);*/
 
     }
 
