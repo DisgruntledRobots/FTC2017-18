@@ -46,13 +46,20 @@ public class ControlsTest extends LinearOpMode {
 
             getStickValues();
 
-            //cartesian coordinates and angle of left joystick on gamepad 1
-            telemetry.addData("Left coords: ", "X: " + leftDriveStickX + ", Y: " + leftDriveStickY);
-            telemetry.addData("Left angle: ", leftDriveStickAngle);
+            double direction = (Math.PI / 4) + leftDriveStickAngle;
+            double targetForceX = Math.cos(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
+            double targetForceY = Math.sin(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
+            double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
+            double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
 
-            //cartesian coordinates and angle of right joystick on gamepad 1
-            telemetry.addData("Right coords: ", "X: " + rightDriveStickX + ", Y: " + rightDriveStickY);
-            telemetry.addData("Right angle: ", rightDriveStickAngle);
+            telemetry.addData("Front Right: ", -targetForceX);
+            telemetry.addData("Front Left: ", targetForceY);
+            telemetry.addData("Back Left: ", -targetForceX);
+            telemetry.addData("Back Right: ", targetForceY);
+            robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
+            robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+            robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+            robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop

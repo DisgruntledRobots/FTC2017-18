@@ -104,43 +104,14 @@ public class Teleop_Mecanum extends LinearOpMode {
                 double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
                 double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
 
-                if( (Math.abs(targetForceX) > 1) || (Math.abs(targetForceY) > 1) ) {
-
-                    if (Math.abs(targetForceX) > Math.abs(targetForceY)) {
-
-                        telemetry.addData("Front Right: ", -targetForceX / Math.abs(targetForceX));
-                        telemetry.addData("Front Left: ", targetForceY / Math.abs(targetForceX));
-                        telemetry.addData("Back Left: ", -targetForceX / Math.abs(targetForceX));
-                        telemetry.addData("Back Right: ", targetForceY / Math.abs(targetForceX));
-                        robot.frontLeftMotor.setPower(targetForceY / Math.abs(targetForceX)/* - rightDriveStickX*/);
-                        robot.frontRightMotor.setPower(-targetForceX / Math.abs(targetForceX)/* + rightDriveStickX*/);
-                        robot.backLeftMotor.setPower(-targetForceX / Math.abs(targetForceX)/* + rightDriveStickX*/);
-                        robot.backRightMotor.setPower(targetForceY / Math.abs(targetForceX)/* - rightDriveStickX*/);
-
-                    } else {
-
-                        telemetry.addData("Front Right: ", -targetForceX / Math.abs(targetForceY));
-                        telemetry.addData("Front Left: ", targetForceY / Math.abs(targetForceY));
-                        telemetry.addData("Back Left: ", -targetForceX / Math.abs(targetForceY));
-                        telemetry.addData("Back Right: ", targetForceY / Math.abs(targetForceY));
-                        robot.frontLeftMotor.setPower(targetForceY / Math.abs(targetForceY)/* - rightDriveStickX*/);
-                        robot.frontRightMotor.setPower(-targetForceX / Math.abs(targetForceY)/* + rightDriveStickX*/);
-                        robot.backLeftMotor.setPower(-targetForceX / Math.abs(targetForceY)/* + rightDriveStickX*/);
-                        robot.backRightMotor.setPower(targetForceY / Math.abs(targetForceY)/* - rightDriveStickX*/);
-                    }
-
-                } else {
-
-                    telemetry.addData("Front Right: ", -targetForceX);
-                    telemetry.addData("Front Left: ", targetForceY);
-                    telemetry.addData("Back Left: ", -targetForceX);
-                    telemetry.addData("Back Right: ", targetForceY);
-                    robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
-                    robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-                    robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-                    robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
-
-                }
+                telemetry.addData("Front Right: ", -targetForceX);
+                telemetry.addData("Front Left: ", targetForceY);
+                telemetry.addData("Back Left: ", -targetForceX);
+                telemetry.addData("Back Right: ", targetForceY);
+                robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
+                robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+                robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
+                robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
 
             } else {
 
