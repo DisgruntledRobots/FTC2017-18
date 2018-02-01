@@ -35,8 +35,22 @@ public class ControlsTest extends LinearOpMode {
 
         robot.init(hardwareMap);
 
+        telemetry.addData("Status: ", "Ready to start");
+        telemetry.update();
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
+
+        telemetry.addData("Status: ", "Calibrating Gyro");
+        telemetry.update();
+        robot.gyroSensor.calibrate();
+        while(robot.gyroSensor.isCalibrating()) {
+
+            //do nothing
+
+        }
+        telemetry.clear();
+        telemetry.update();
         runtime.reset();
 
         // run until the end of the match (driver presses STOP)
@@ -44,22 +58,17 @@ public class ControlsTest extends LinearOpMode {
 
             telemetry.addData("Status", "Run Time: " + runtime.toString());
 
-            getStickValues();
+            robot.frontLeftMotor.setPower(-gamepad1.left_stick_y);
+            robot.frontRightMotor.setPower(-gamepad1.right_stick_y);
+            robot.backRightMotor.setPower(-gamepad1.right_stick_y);
+            robot.backLeftMotor.setPower(-gamepad1.left_stick_y);
+            telemetry.addData("Drive mode: ", "Tank");
 
-            double direction = (Math.PI / 4) + leftDriveStickAngle;
-            double targetForceX = Math.cos(direction) * leftDriveStickHypot;
-            double targetForceY = Math.sin(direction) * leftDriveStickHypot;
-            double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
-            double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
-
-            telemetry.addData("Front Right: ", -targetForceX);
-            telemetry.addData("Front Left: ", targetForceY);
-            telemetry.addData("Back Left: ", -targetForceX);
-            telemetry.addData("Back Right: ", targetForceY);
-            robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
-            robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-            robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-            robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
+            telemetry.addData("Raw X: ", robot.gyroSensor.rawX());
+            telemetry.addData("Raw Y: ", robot.gyroSensor.rawY());
+            telemetry.addData("Raw Z: ", robot.gyroSensor.rawZ());
+            telemetry.addData("Heading: ", robot.gyroSensor.getHeading());
+            telemetry.addData("Integrated Z: ", robot.gyroSensor.getIntegratedZValue());
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop

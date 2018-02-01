@@ -1,37 +1,21 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
-import com.qualcomm.robotcore.hardware.Gyroscope;
-import com.qualcomm.robotcore.hardware.IntegratingGyroscope;
-
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-import org.firstinspires.ftc.robotcore.external.navigation.AngularVelocity;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
-import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
 
 /**
- * Created by 5815-Disgruntled on 10/18/2017.
- *
- * A DcMotorDriver() implementation using
- * timing to control linear motion.
- *
- * Gyro sensor is used for rotational motion.
+ * Created by 5815-Disgruntled on 2/1/2018.
  */
 
-public class TimedDriver extends DcMotorDriver {
-
-
+public class GyroDriver extends DcMotorDriver {
 
     public static final double INCHES_PER_SECOND = 9;
-    public static final double DEGREES_PER_SECOND = 90;
-    //public static ModernRoboticsI2cGyro gyro;
 
-    public TimedDriver(DcMotor[] motors, LinearOpMode opMode) {
+    public GyroDriver(DcMotor[] motors, LinearOpMode opMode, ModernRoboticsI2cGyro gyroSensor) {
 
         motors_ref = motors;
-        //gyro = gyroParam;
+        gyro = gyroSensor;
 
         frontLeft = motors_ref[0];
         frontRight = motors_ref[1];
@@ -46,8 +30,6 @@ public class TimedDriver extends DcMotorDriver {
         backRight.setPower(0);
 
     }
-
-
 
     public void forward(Double speed, Double distance) {
 
@@ -113,15 +95,15 @@ public class TimedDriver extends DcMotorDriver {
 
     }
 
-
-
     public void rotateRight(Double speed, Double degrees) {
+
+        double targetHeading = gyro.getHeading() - degrees;
 
         runtime.reset();
 
         if( headedRight ) {
 
-            while( opMode.opModeIsActive() && (runtime.seconds() < (degrees / DEGREES_PER_SECOND)) ) {
+            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
 
                 powerMotors(speed);
 
@@ -134,7 +116,7 @@ public class TimedDriver extends DcMotorDriver {
             setMotorsRight();
             headedRight = true;
 
-            while( opMode.opModeIsActive() && (runtime.seconds() < (degrees / DEGREES_PER_SECOND)) ) {
+            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
 
                 powerMotors(speed);
 
@@ -150,11 +132,13 @@ public class TimedDriver extends DcMotorDriver {
 
     public void rotateLeft(Double speed, Double degrees) {
 
+        double targetHeading = gyro.getHeading() + degrees;
+
         runtime.reset();
 
         if( !headedRight ) {
 
-            while( opMode.opModeIsActive() && (runtime.seconds() < (degrees / DEGREES_PER_SECOND)) ) {
+            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
 
                 powerMotors(speed);
 
@@ -167,7 +151,7 @@ public class TimedDriver extends DcMotorDriver {
             setMotorsLeft();
             headedRight = false;
 
-            while( opMode.opModeIsActive() && (runtime.seconds() < (degrees / DEGREES_PER_SECOND)) ) {
+            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
 
                 powerMotors(speed);
 
@@ -178,7 +162,5 @@ public class TimedDriver extends DcMotorDriver {
         }
 
     }
-
-
 
 }

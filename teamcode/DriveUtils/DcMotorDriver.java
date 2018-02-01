@@ -1,5 +1,6 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils;
 
+import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -21,6 +22,7 @@ public abstract class DcMotorDriver {
     protected DcMotor frontRight;
     protected DcMotor backLeft;
     protected DcMotor backRight;
+    protected ModernRoboticsI2cGyro gyro;
     protected boolean headedFwd = true;
     protected boolean headedRight = true;
     protected LinearOpMode opMode;

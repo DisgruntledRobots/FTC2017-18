@@ -127,13 +127,13 @@ public class Teleop_Mecanum extends LinearOpMode {
 
                 robot.rightRoller.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
                 robot.leftRoller.setPower(-gamepad2.right_trigger + gamepad2.left_trigger);
-                robot.blockTray.setPower(0.35 * gamepad2.left_stick_y);
+                robot.blockTray.setPower(0.65 * gamepad2.left_stick_y);
 
             } else {
 
                 robot.leftRoller.setPower(gamepad2.right_stick_y);
                 robot.rightRoller.setPower(-gamepad2.left_stick_y);
-                robot.blockTray.setPower(0.50 * (gamepad2.left_trigger - gamepad2.right_trigger));
+                robot.blockTray.setPower(0.65 * (gamepad2.left_trigger - gamepad2.right_trigger));
 
             }
 
