@@ -47,8 +47,8 @@ public class ControlsTest extends LinearOpMode {
             getStickValues();
 
             double direction = (Math.PI / 4) + leftDriveStickAngle;
-            double targetForceX = Math.cos(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
-            double targetForceY = Math.sin(direction) * gamepad1.right_trigger - gamepad1.left_trigger;
+            double targetForceX = Math.cos(direction) * leftDriveStickHypot;
+            double targetForceY = Math.sin(direction) * leftDriveStickHypot;
             double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
             double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
 
