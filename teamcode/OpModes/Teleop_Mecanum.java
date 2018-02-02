@@ -65,7 +65,6 @@ public class Teleop_Mecanum extends LinearOpMode {
             telemetry.addData("Right angle: ", rightDriveStickAngle);
 
             //if right bumper held, go into regular mecanum drive
-            //if left bumper held, go into test mecanum drive
             //if no bumpers are held, go into tank drive
             if( gamepad1.right_bumper ) {
 
@@ -96,23 +95,6 @@ public class Teleop_Mecanum extends LinearOpMode {
 
                 telemetry.addData("Drive mode: ", "Mecanum");
 
-            } else if(gamepad1.left_bumper) {
-
-                double direction = (Math.PI / 4) + leftDriveStickAngle;
-                double targetForceX = Math.cos(direction) * leftDriveStickHypot;
-                double targetForceY = Math.sin(direction) * leftDriveStickHypot;
-                double leftTurn = rightDriveStickX < 0 ? rightDriveStickX : 0;
-                double rightTurn = rightDriveStickX > 0 ? -rightDriveStickX : 0;
-
-                telemetry.addData("Front Right: ", -targetForceX);
-                telemetry.addData("Front Left: ", targetForceY);
-                telemetry.addData("Back Left: ", -targetForceX);
-                telemetry.addData("Back Right: ", targetForceY);
-                robot.frontLeftMotor.setPower(targetForceY/* - rightDriveStickX*/);
-                robot.frontRightMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-                robot.backLeftMotor.setPower(-targetForceX/* + rightDriveStickX*/);
-                robot.backRightMotor.setPower(targetForceY/* - rightDriveStickX*/);
-
             } else {
 
                 robot.frontLeftMotor.setPower(leftDriveStickY);
@@ -125,15 +107,15 @@ public class Teleop_Mecanum extends LinearOpMode {
 
             if( !altControls ) {
 
-                robot.rightRoller.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
-                robot.leftRoller.setPower(-gamepad2.right_trigger + gamepad2.left_trigger);
-                robot.blockTray.setPower(0.65 * gamepad2.left_stick_y);
-
-            } else {
-
                 robot.leftRoller.setPower(gamepad2.right_stick_y);
                 robot.rightRoller.setPower(-gamepad2.left_stick_y);
                 robot.blockTray.setPower(0.65 * (gamepad2.left_trigger - gamepad2.right_trigger));
+
+            } else {
+
+                robot.rightRoller.setPower(gamepad2.right_trigger - gamepad2.left_trigger);
+                robot.leftRoller.setPower(-gamepad2.right_trigger + gamepad2.left_trigger);
+                robot.blockTray.setPower(0.65 * gamepad2.left_stick_y);
 
             }
 

@@ -24,8 +24,8 @@ public class TimedDriver extends DcMotorDriver {
 
 
 
-    public static final double INCHES_PER_SECOND = 9;
-    public static final double DEGREES_PER_SECOND = 90;
+    public static final double INCHES_PER_SECOND = 18;
+    public static final double DEGREES_PER_SECOND = 180;
     //public static ModernRoboticsI2cGyro gyro;
 
     public TimedDriver(DcMotor[] motors, LinearOpMode opMode) {

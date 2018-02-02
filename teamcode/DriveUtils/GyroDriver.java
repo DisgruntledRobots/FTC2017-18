@@ -97,13 +97,14 @@ public class GyroDriver extends DcMotorDriver {
 
     public void rotateRight(Double speed, Double degrees) {
 
-        double targetHeading = gyro.getHeading() - degrees;
+        //double targetHeading = gyro.getHeading() - degrees;
+        double targetHeading = gyro.getIntegratedZValue() - degrees;
 
         runtime.reset();
 
         if( headedRight ) {
 
-            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
+            while( opMode.opModeIsActive() && (targetHeading < gyro.getIntegratedZValue()) ) {
 
                 powerMotors(speed);
 
@@ -116,7 +117,7 @@ public class GyroDriver extends DcMotorDriver {
             setMotorsRight();
             headedRight = true;
 
-            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
+            while( opMode.opModeIsActive() && (targetHeading < gyro.getIntegratedZValue()) ) {
 
                 powerMotors(speed);
 
@@ -132,13 +133,15 @@ public class GyroDriver extends DcMotorDriver {
 
     public void rotateLeft(Double speed, Double degrees) {
 
-        double targetHeading = gyro.getHeading() + degrees;
+        //double targetHeading = gyro.getHeading() + degrees;
+        double targetHeading = gyro.getIntegratedZValue() + degrees;
+        double error = targetHeading - gyro.getIntegratedZValue();
 
         runtime.reset();
 
         if( !headedRight ) {
 
-            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
+            while( opMode.opModeIsActive() && (targetHeading > gyro.getIntegratedZValue()) ) {
 
                 powerMotors(speed);
 
@@ -151,7 +154,7 @@ public class GyroDriver extends DcMotorDriver {
             setMotorsLeft();
             headedRight = false;
 
-            while( opMode.opModeIsActive() && (targetHeading != gyro.getHeading()) ) {
+            while( opMode.opModeIsActive() && (targetHeading > gyro.getIntegratedZValue()) ) {
 
                 powerMotors(speed);
 
