@@ -1,5 +1,7 @@
 package org.firstinspires.ftc.FTC2017_18.teamcode.DriveUtils;
 
+import android.util.Range;
+
 import com.qualcomm.hardware.modernrobotics.ModernRoboticsI2cGyro;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -95,37 +97,41 @@ public class GyroDriver extends DcMotorDriver {
 
     }
 
-    public void rotateRight(Double speed, Double degrees) {
+    public void rotate(double degrees) {
 
-        //double targetHeading = gyro.getHeading() - degrees;
-        double targetHeading = gyro.getIntegratedZValue() - degrees;
+        gyro.resetZAxisIntegrator();
+        double targetHeading = gyro.getIntegratedZValue() + degrees;
+        double errorUnscaled = targetHeading - gyro.getIntegratedZValue();
+        double errorScaled = errorUnscaled / Math.abs(degrees);
+        double errorThreshold = 5.0;
+        double Kp = 0.1;
+        double power;
 
-        runtime.reset();
-
-        if( headedRight ) {
-
-            while( opMode.opModeIsActive() && (targetHeading < gyro.getIntegratedZValue()) ) {
-
-                powerMotors(speed);
-
-            }
-
-            stopMotors();
-
-        } else {
+        if( degrees < 0 ) {
 
             setMotorsRight();
-            headedRight = true;
 
-            while( opMode.opModeIsActive() && (targetHeading < gyro.getIntegratedZValue()) ) {
+        } else if( degrees > 0 ) {
 
-                powerMotors(speed);
-
-            }
-
-            stopMotors();
+            setMotorsLeft();
 
         }
+
+        while((Math.abs(errorUnscaled) > errorThreshold) && opMode.opModeIsActive()) {
+
+            errorUnscaled = targetHeading - gyro.getIntegratedZValue();
+            errorScaled = errorUnscaled / Math.abs(degrees);
+            power = Math.abs(errorScaled * Kp);
+            opMode.telemetry.addData("Power: ", power);
+            powerMotors(power);
+
+        }
+
+    }
+
+    public void rotateRight(Double speed, Double degrees) {
+
+        //empty implementation
 
     }
 
@@ -133,36 +139,7 @@ public class GyroDriver extends DcMotorDriver {
 
     public void rotateLeft(Double speed, Double degrees) {
 
-        //double targetHeading = gyro.getHeading() + degrees;
-        double targetHeading = gyro.getIntegratedZValue() + degrees;
-        double error = targetHeading - gyro.getIntegratedZValue();
-
-        runtime.reset();
-
-        if( !headedRight ) {
-
-            while( opMode.opModeIsActive() && (targetHeading > gyro.getIntegratedZValue()) ) {
-
-                powerMotors(speed);
-
-            }
-
-            stopMotors();
-
-        } else {
-
-            setMotorsLeft();
-            headedRight = false;
-
-            while( opMode.opModeIsActive() && (targetHeading > gyro.getIntegratedZValue()) ) {
-
-                powerMotors(speed);
-
-            }
-
-            stopMotors();
-
-        }
+        //empty implementation
 
     }
 

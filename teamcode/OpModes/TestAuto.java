@@ -25,7 +25,7 @@ public class TestAuto extends LinearOpMode {
     private static DcMotor[] motors = new DcMotor[4];
 
     public HardwareFrame robot = new HardwareFrame();
-    private DcMotorDriver drive;
+    private GyroDriver drive;
     private ElapsedTime runtime = new ElapsedTime();
 
     @Override
@@ -60,18 +60,12 @@ public class TestAuto extends LinearOpMode {
         telemetry.addData("Status: ", "Running");
         telemetry.update();
 
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
-        drive.rotateLeft(TURN_SPEED, 90.0);
-        drive.rotateRight(TURN_SPEED, 90.0);
+        drive.rotate(90.0);
+        drive.rotate(-90.0);
+        drive.rotate(90.0);
+        drive.rotate(-90.0);
+        drive.rotate(90.0);
+        drive.rotate(-90.0);
 
         //Indicate smooth ending to opmode
         telemetry.addData("Status: ", "Ending");

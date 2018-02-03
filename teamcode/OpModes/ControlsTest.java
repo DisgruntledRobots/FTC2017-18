@@ -53,10 +53,12 @@ public class ControlsTest extends LinearOpMode {
         telemetry.update();
         runtime.reset();
 
+        double targetHeading = robot.gyroSensor.getIntegratedZValue() - 90;
+        double Kp = 0.5;
+        double errorUnscaled = targetHeading - robot.gyroSensor.getIntegratedZValue();
+        double errorScaled = errorUnscaled / Math.abs(90);
         // run until the end of the match (driver presses STOP)
-        while (opModeIsActive()) {
-
-            telemetry.addData("Status", "Run Time: " + runtime.toString());
+        while((Math.abs(errorUnscaled) > 2.0) && opModeIsActive()) {
 
             robot.frontLeftMotor.setPower(-gamepad1.left_stick_y);
             robot.frontRightMotor.setPower(-gamepad1.right_stick_y);
@@ -64,11 +66,10 @@ public class ControlsTest extends LinearOpMode {
             robot.backLeftMotor.setPower(-gamepad1.left_stick_y);
             telemetry.addData("Drive mode: ", "Tank");
 
-            telemetry.addData("Raw X: ", robot.gyroSensor.rawX());
-            telemetry.addData("Raw Y: ", robot.gyroSensor.rawY());
-            telemetry.addData("Raw Z: ", robot.gyroSensor.rawZ());
-            telemetry.addData("Heading: ", robot.gyroSensor.getHeading());
-            telemetry.addData("Integrated Z: ", robot.gyroSensor.getIntegratedZValue());
+
+            errorUnscaled = targetHeading - robot.gyroSensor.getIntegratedZValue();
+            errorScaled = errorUnscaled / Math.abs(90);
+            telemetry.addData("Power: ", errorScaled * Kp);
 
             telemetry.update();
             idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
